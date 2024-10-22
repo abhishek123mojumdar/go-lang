@@ -64,15 +64,32 @@ func main() {
 	fmt.Println("Please enter age")
 	fmt.Scan(&ageOfUser)
 
+	// %s is used for string %d is used for integer %v is used for any type of variable
 	fmt.Printf("Hello %s %s, you are %d years old \n", fname, lname, ageOfUser)
 	fmt.Printf("If your %d is greater than %d you will be eligible for a ticket \n", ageOfUser, age)
 
 	//Array declaration in go
-
+	// Array size has to be defined first and then the values can be assigned
+	// Much like Java and unlike JavaScript where we can directly assign values to an array
 	var booking [10]string
 	booking[0] = "John"
 
 	fmt.Printf("The first booking is %s\n", booking[0])
 	fmt.Printf("The first booking is %s\n", booking)
+	fmt.Printf("The type of booking array %T\n", booking)
+	fmt.Printf("The length of booking array %v\n", len(booking))
+
+	//When we do not provide the size of the array, it is called a slice
+	//Adding values to a slice has to be done using the append function
+
+	var bookingList []string
+	bookingList = append(bookingList, "John")
+	bookingList = append(bookingList, "Ram")
+	bookingList = append(bookingList, "Abhi")
+	bookingList = append(bookingList, "Shyam")
+
+	fmt.Printf("The first booking is %v\n", bookingList[0])
+	fmt.Printf("Booking list is  %v\n", bookingList)
+	fmt.Printf("Booking list length is %d\n", len(bookingList))
 
 }
