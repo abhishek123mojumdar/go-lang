@@ -8,7 +8,10 @@
 package main
 
 //fmt is a package which provides support for the Print function
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // Go needs to know the entry point of our appication
 // We need explicitly tell go that this is the entry point of our application, start executing from here
@@ -40,7 +43,7 @@ func main() {
 	fmt.Printf("We are organizing %s in %s \n", conferenceName, conferenceLocation)
 
 	var availableQuota int
-	availableQuota = totoalQuota - usedQuota
+	availableQuota = totoalQuota
 	fmt.Printf("%v tickets are avaiable right now.\n", availableQuota)
 
 	// TYPE OF VARIABLES can be checked using %T
@@ -49,6 +52,7 @@ func main() {
 	var fname string
 	var lname string
 	var ageOfUser int
+	var noOfTicketRequired int
 
 	// We can also use the Scan function to take input from the user
 	// We need to declare a variable and pass the reference of the variable to the Scan function
@@ -57,39 +61,120 @@ func main() {
 	// of another variable which points to the memory address of the value . Refer pointer pic in assets folder
 	// pointers in go are also called special variable
 	// This will help store the value entered by the user in the variable
-	fmt.Println("Please enter your first name")
-	fmt.Scan(&fname)
-	fmt.Println("Please enter last name")
-	fmt.Scan(&lname)
-	fmt.Println("Please enter age")
-	fmt.Scan(&ageOfUser)
+
+	// fmt.Println("Please enter your first name")
+	// fmt.Scan(&fname)
+	// fmt.Println("Please enter last name")
+	// fmt.Scan(&lname)
+	// fmt.Println("Please enter age")
+	// fmt.Scan(&ageOfUser)
+	// fmt.Println("Please enter number of tickets required")
+	// fmt.Scan(&noOfTicketRequired)
+
+	//availableQuota = availableQuota - noOfTicketRequired
 
 	// %s is used for string %d is used for integer %v is used for any type of variable
 	fmt.Printf("Hello %s %s, you are %d years old \n", fname, lname, ageOfUser)
-	fmt.Printf("If your %d is greater than %d you will be eligible for a ticket \n", ageOfUser, age)
+	fmt.Printf("You have successfully booked %d tickets. \n", noOfTicketRequired)
+	fmt.Printf("Total number of tickets available for booking are %d\n", availableQuota)
 
 	//Array declaration in go
 	// Array size has to be defined first and then the values can be assigned
 	// Much like Java and unlike JavaScript where we can directly assign values to an array
-	var booking [10]string
-	booking[0] = "John"
+	// var booking [10]string
+	// booking[0] = "John"
 
-	fmt.Printf("The first booking is %s\n", booking[0])
-	fmt.Printf("The first booking is %s\n", booking)
-	fmt.Printf("The type of booking array %T\n", booking)
-	fmt.Printf("The length of booking array %v\n", len(booking))
+	// fmt.Printf("The first booking is %s\n", booking[0])
+	// fmt.Printf("The first booking is %s\n", booking)
+	// fmt.Printf("The type of booking array %T\n", booking)
+	// fmt.Printf("The length of booking array %v\n", len(booking))
 
 	//When we do not provide the size of the array, it is called a slice
 	//Adding values to a slice has to be done using the append function
 
 	var bookingList []string
-	bookingList = append(bookingList, "John")
-	bookingList = append(bookingList, "Ram")
-	bookingList = append(bookingList, "Abhi")
-	bookingList = append(bookingList, "Shyam")
+	// bookingList = append(bookingList, "John")
+	// bookingList = append(bookingList, "Ram")
+	// bookingList = append(bookingList, "Abhi")
+	// bookingList = append(bookingList, "Shyam")
 
-	fmt.Printf("The first booking is %v\n", bookingList[0])
-	fmt.Printf("Booking list is  %v\n", bookingList)
-	fmt.Printf("Booking list length is %d\n", len(bookingList))
+	// fmt.Printf("The first booking is %v\n", bookingList[0])
+	// fmt.Printf("Booking list is  %v\n", bookingList)
+	// fmt.Printf("Booking list length is %d\n", len(bookingList))
+
+	// Infinite loop
+
+	for {
+
+		if len(bookingList) < 3 {
+			fmt.Println("Please enter your first name")
+			fmt.Scan(&fname)
+			fmt.Println("Please enter last name")
+			fmt.Scan(&lname)
+			fmt.Println("Please enter age")
+			fmt.Scan(&ageOfUser)
+			fmt.Println("Please enter number of tickets required")
+			fmt.Scan(&noOfTicketRequired)
+
+			availableQuota = availableQuota - noOfTicketRequired
+
+			fmt.Printf("Hello %s %s, you are %d years old \n", fname, lname, ageOfUser)
+			fmt.Printf("You have successfully booked %d tickets. \n", noOfTicketRequired)
+			fmt.Printf("Total number of tickets available for booking are %d\n", availableQuota)
+
+			bookingList = append(bookingList, fname+" "+lname)
+
+			fmt.Printf("Booking list is  %v\n", bookingList)
+			noOfTicketRequired = 0
+		} else {
+			break
+		}
+
+		connectToDatabase(bookingList)
+	}
+
+	// this is a finite for loop
+	// it gives the index of the list in index field and the value in the booking field
+	// much like for each loop in JS
+	for index, booking := range bookingList {
+		fmt.Printf("Booking %d is %v\n", index, booking)
+		// Fields function is used to split the string into words based on space
+		var name = strings.Fields(booking)
+		fmt.Printf("First name is %v\n", name[0])
+	}
+}
+
+func connectToDatabase(bookings []string) {
+	// connect to the database
+	// insert the bookings into the database
+	// return the status of the booking
+	fmt.Println("Connecting to the database")
+	fmt.Println("Inserting the bookings into the database")
+	fmt.Println("Returning the status of the booking")
+
+	for index, booking := range bookings {
+		var flag string
+		fmt.Printf("Booking %d is %v\n", index, booking)
+		if len(booking) > 3 && len(booking) < 10 {
+			flag = "short"
+		} else if len(booking) >= 10 && len(booking) < 15 {
+			flag = "medium"
+		} else {
+			flag = "long"
+		}
+
+		switch flag {
+		case "short":
+			fmt.Println("The booking is short")
+		case "medium":
+			fmt.Println("The booking is medium")
+		case "long":
+			fmt.Println("The booking is long")
+		default:
+			fmt.Println("The booking is not valid")
+
+		}
+
+	}
 
 }
