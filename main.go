@@ -8,7 +8,9 @@
 package main
 
 //fmt is a package which provides support for the Print function
+//Th
 import (
+	"booking-app/Utility"
 	"fmt"
 	"strings"
 )
@@ -49,11 +51,6 @@ func main() {
 	// TYPE OF VARIABLES can be checked using %T
 	fmt.Printf("The type of availableQuota is %T\n", availableQuota)
 
-	var fname string
-	var lname string
-	var ageOfUser int
-	var noOfTicketRequired int
-
 	// We can also use the Scan function to take input from the user
 	// We need to declare a variable and pass the reference of the variable to the Scan function
 	// The scan function will take in pointers
@@ -74,9 +71,9 @@ func main() {
 	//availableQuota = availableQuota - noOfTicketRequired
 
 	// %s is used for string %d is used for integer %v is used for any type of variable
-	fmt.Printf("Hello %s %s, you are %d years old \n", fname, lname, ageOfUser)
-	fmt.Printf("You have successfully booked %d tickets. \n", noOfTicketRequired)
-	fmt.Printf("Total number of tickets available for booking are %d\n", availableQuota)
+	// fmt.Printf("Hello %s %s, you are %d years old \n", fname, lname, ageOfUser)
+	// fmt.Printf("You have successfully booked %d tickets. \n", noOfTicketRequired)
+	// fmt.Printf("Total number of tickets available for booking are %d\n", availableQuota)
 
 	//Array declaration in go
 	// Array size has to be defined first and then the values can be assigned
@@ -107,30 +104,31 @@ func main() {
 	for {
 
 		if len(bookingList) < 3 {
-			fmt.Println("Please enter your first name")
-			fmt.Scan(&fname)
-			fmt.Println("Please enter last name")
-			fmt.Scan(&lname)
-			fmt.Println("Please enter age")
-			fmt.Scan(&ageOfUser)
-			fmt.Println("Please enter number of tickets required")
-			fmt.Scan(&noOfTicketRequired)
+			fname, lname, ageOfUser, noOfTicketRequired := Utility.GetUser()
+			fullname, isAgeValid, address := checkAndReturnUserDetails(fname, lname, ageOfUser, conferenceLocation)
+			fmt.Printf("The full name is %v\n", fullname)
+			fmt.Printf("The age is valid %v\n", isAgeValid)
+			fmt.Printf("The address %v\n", address)
+			if isAgeValid {
+				availableQuota = availableQuota - noOfTicketRequired
 
-			availableQuota = availableQuota - noOfTicketRequired
+				fmt.Printf("Hello %s %s, you are %d years old \n", fname, lname, ageOfUser)
+				fmt.Printf("You have successfully booked %d tickets. \n", noOfTicketRequired)
+				fmt.Printf("Total number of tickets available for booking are %d\n", availableQuota)
 
-			fmt.Printf("Hello %s %s, you are %d years old \n", fname, lname, ageOfUser)
-			fmt.Printf("You have successfully booked %d tickets. \n", noOfTicketRequired)
-			fmt.Printf("Total number of tickets available for booking are %d\n", availableQuota)
+				bookingList = append(bookingList, fname+" "+lname)
 
-			bookingList = append(bookingList, fname+" "+lname)
+				fmt.Printf("Booking list is  %v\n", bookingList)
+			} else {
+				fmt.Println("The age is not valid, user not allowed to book the tickets")
+			}
 
-			fmt.Printf("Booking list is  %v\n", bookingList)
 			noOfTicketRequired = 0
 		} else {
 			break
 		}
 
-		connectToDatabase(bookingList)
+		checkBooking(bookingList)
 	}
 
 	// this is a finite for loop
@@ -142,9 +140,10 @@ func main() {
 		var name = strings.Fields(booking)
 		fmt.Printf("First name is %v\n", name[0])
 	}
+
 }
 
-func connectToDatabase(bookings []string) {
+func checkBooking(bookings []string) {
 	// connect to the database
 	// insert the bookings into the database
 	// return the status of the booking
@@ -176,5 +175,14 @@ func connectToDatabase(bookings []string) {
 		}
 
 	}
+}
 
+// go allows a function to return multiple values
+// The type of values returned needs to be mentioned in the function signature
+// The values returned can be accessed by the calling function and assigned to variables
+func checkAndReturnUserDetails(fname string, lname string, ageOfUser int, location string) (string, bool, string) {
+	fullname := fname + " " + lname
+	isAgeValid := ageOfUser > 20
+	address := location
+	return fullname, isAgeValid, address
 }
