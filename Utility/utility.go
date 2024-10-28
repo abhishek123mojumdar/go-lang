@@ -4,6 +4,7 @@ package Utility
 // We have to name the package as we named the main package
 
 import (
+	"booking-app/StoreData"
 	"fmt"
 )
 
@@ -32,5 +33,6 @@ func GetUser() (string, string, int, int) {
 	fmt.Scan(&ageOfUser)
 	fmt.Println("Please enter number of tickets required")
 	fmt.Scan(&noOfTicketRequired)
+	StoreData.StoreValue()
 	return fname, lname, ageOfUser, noOfTicketRequired
 }

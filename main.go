@@ -54,7 +54,7 @@ func main() {
 	// We can also use the Scan function to take input from the user
 	// We need to declare a variable and pass the reference of the variable to the Scan function
 	// The scan function will take in pointers
-	// The pointer is a variable which points to the memory location
+	// The pointer is a variable which points to the memory location ( see next line )
 	// of another variable which points to the memory address of the value . Refer pointer pic in assets folder
 	// pointers in go are also called special variable
 	// This will help store the value entered by the user in the variable
