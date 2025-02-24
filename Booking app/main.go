@@ -30,6 +30,7 @@ func main() {
 	//fmt.Print("Hello world")
 	//var name = "John" // string
 	//name := "Jon" // string same as the above line ; this is a short hand declaration
+	//Walrus operator := can only be used insided a function . It can not be used outside a function
 	// We can not use short hand declaration for constants
 	const age = 25 // integer
 	//name = "Doe"
