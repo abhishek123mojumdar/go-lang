@@ -8,7 +8,6 @@
 package main
 
 //fmt is a package which provides support for the Print function
-//Th
 import (
 	"booking-app/Utility"
 	"fmt"
